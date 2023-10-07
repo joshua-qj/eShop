@@ -1,0 +1,13 @@
+﻿@using eShop.CoreBusinees.Models;
+@if (Product is not null) {
+    <tr>
+        <td><NavLink href="@($"product/{Product.ProductId}")">@Product.Name</NavLink></td>
+        <td>@Product.Brand</td>
+        <td>@Product.Price.ToString("c")</td>
+    </tr>
+}
+
+@code {
+    [Parameter]
+    public Product Product { get; set; }
+}

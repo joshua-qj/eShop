@@ -1,0 +1,37 @@
+﻿@using eShop.Web.Common.ViewModels;
+@using Microsoft.AspNetCore.Components.Forms
+@inject NavigationManager navigationManager
+
+
+<h3>Login</h3>
+<br />
+@if (_loginViewModel is not null) {
+    <EditForm Model="_loginViewModel" OnValidSubmit="HandleValidSubmit" class="form-line">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
+    <div class="form-group">
+        <label for="name">User Name</label>
+        <InputText id="name" @bind-Value="_loginViewModel.UserName" class="form-control"></InputText>
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password</label>
+        <InputText id="password" @bind-Value="_loginViewModel.Password" class="form-control"></InputText>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Login</button>
+    </EditForm>
+}
+
+
+@code {
+    private LoginViewModel _loginViewModel;
+
+    protected override void OnInitialized() {
+        _loginViewModel = new LoginViewModel();        
+    }
+
+    private void HandleValidSubmit() {
+        navigationManager.NavigateTo($"/authenticate?usr={_loginViewModel.UserName}&pwd={_loginViewModel.Password}",true);
+    }
+}

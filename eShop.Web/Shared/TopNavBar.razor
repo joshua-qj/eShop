@@ -1,0 +1,49 @@
+﻿<nav class="navbar navbar-expand-lg navbar-light bg-light">
+   
+        <a class="navbar-brand" href="#">eShop</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+
+            <ul class="navbar-nav w-100">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="">Home</a>
+                </li>
+                <AuthorizeView>
+                    <Authorized>
+                <li class="nav-item">
+                    <a class="nav-link" href="outstandingorders">Outstanding Order</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="proccessedorders">Processed Order</a>
+                </li>
+                    </Authorized>
+                </AuthorizeView>
+        <li class="nav-item ms-auto ">
+                       <AuthorizeView>
+                <Authorized>                  
+                    <NavLink class="nav-link " href="/logout"> 
+                    Sing Out    
+                    </NavLink>
+                </Authorized>
+                <NotAuthorized>
+                    <NavLink class="nav-link " href="cart">
+                        <eShop.Web.CustomerPortal.Controls.CartNumberComponent></eShop.Web.CustomerPortal.Controls.CartNumberComponent>
+                    </NavLink>
+                </NotAuthorized>
+            </AuthorizeView>
+            
+         
+        </li>
+
+
+
+            </ul>
+  
+ 
+</nav>
+
+@code {
+
+}

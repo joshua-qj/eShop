@@ -1,0 +1,42 @@
+﻿@page "/product/{id:int}"
+@using Microsoft.AspNetCore.Components.Routing
+@inject NavigationManager navigationManager
+@inject IViewProductUseCase viewProductUseCase
+@inject IAddProductToCartUseCase addProductToCartUseCase
+
+<h3>Product Details</h3>
+
+<div class="card" style="width: 28rem;">
+    <div class="card-body">
+        <img src="@_product.ImageLink" />
+        <h5 class="card-title">    @_product.Name</h5>
+        <h6 class="card-subtitle mb-2 text-muted">@_product.Brand</h6>
+        <p class="card-text">@_product.Description</p>
+        <hr />
+        <p>
+            Price: <label style="color:darkred">    @_product.Price.ToString("c")</label>
+        </p>
+
+        <button class="btn btn-primary" @onclick="AddToCart">Add to Cart</button>
+    </div>
+</div>
+<br/>
+<NavLink href="products">Back to Products</NavLink>
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private Product _product;
+
+    protected override void OnParametersSet() {
+        //when parameter Id is changed, or user navigate to this page, Id will be given a value,
+        // this lifecycle event will be called
+        if (Id>0) {
+            _product = viewProductUseCase.Execute(Id);
+        }
+    }
+
+    private void AddToCart() {
+        addProductToCartUseCase.Execute(_product.ProductId);
+        navigationManager.NavigateTo("/");
+    }
+}

@@ -1,0 +1,52 @@
+﻿@page "/cart"
+
+@inject IViewShoppingCartUseCase viewShoppingCartUseCase
+
+<h3>Shopping Cart</h3>
+<br />
+@if (_order is not null && _order.LineItems is not null && _order.LineItems.Count > 0) {
+    <div class="row">
+        <div class="col-6">
+            <ul>
+                @for (int i = 0; i < _order.LineItems.Count; i++) {
+                    <LineItemComponent LineItem="_order.LineItems[i]"
+                                       OnDeleteProduct="HandleDeleteProduct"
+                                       OnUpdateQuantity="HandleUpdateQuantity">
+                    </LineItemComponent>
+                    //line items
+                    @if (i < _order.LineItems.Count - 1) {
+                        <li style="list-style:none">
+                            <hr />
+                        </li>
+                    }
+
+                }
+            </ul>
+        </div>
+        <div class="col">
+            @*    order summary *@
+            <OrderSummaryComponent Order="_order"></OrderSummaryComponent>
+        </div>
+    </div>
+}
+
+@code {
+    private Order _order;
+    protected override async Task OnAfterRenderAsync(bool firstRender) {
+        //Local storage using JavaScript interop, cannot use it within OnInitialized to initialize data.
+        //because OnInitialized will be triggered twice, the first time triggered, it cannot do anything like
+        //JavaScript, Interop.OnAfterRenderAsync is only trigger once, and after SingalR connection connected.
+
+        if (firstRender) {
+            _order = await viewShoppingCartUseCase.Execute();
+            StateHasChanged();
+        }
+    }
+
+    private void HandleDeleteProduct(Order order) {
+        _order = order;
+    }
+    private void HandleUpdateQuantity(Order order) {
+        _order = order;
+    }
+}
